@@ -18,7 +18,7 @@ Todos os endpoints, exceto `GET /health`, exigem `Authorization: Bearer <CTC_API
 | Método | Endpoint | Uso |
 |---|---|---|
 | GET | `/health` | Health check |
-| GET | `/v1/pncp/publicacoes` | Publicações PNCP; `data_inicial`, `data_final` (AAAAMMDD), `modalidade`; filtros opcionais `uf`, `cnpj`, `pagina`, `tamanho_pagina` |
+| GET | `/v1/pncp/publicacoes` | Publicações PNCP; `data_inicial`, `data_final` (AAAAMMDD), `modalidade`; filtros opcionais `uf`, `cnpj`, `tamanho_pagina` |
 | GET | `/v1/pncp/propostas` | Contratações com propostas abertas; `data_final` (AAAAMMDD) |
 | GET | `/v1/pncp/contratacoes?controle=...` | Detalhe e lista de documentos pelo controle PNCP |
 | GET | `/v1/comprasgov/publicacoes` | Dados Abertos Compras.gov.br; datas AAAA-MM-DD |
