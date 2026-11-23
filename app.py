@@ -10,20 +10,14 @@ from fastapi import Depends, FastAPI, Header, HTTPException, Query
 from fastapi.responses import JSONResponse
 
 from integracoes.fontes_publicas.client import (
-    SourceError,
-    pncp_open_proposals,
-    pncp_purchase_detail,
-    pncp_purchase_documents,
-    pncp_search_all_pages,
-    compras_gov_search_all_pages,
+    SourceError, pncp_purchase_detail, pncp_purchase_documents,
+    pncp_search_all_pages, compras_gov_search_all_pages,
 )
 
 app = FastAPI(
-    title="CTC Tech — Fontes Públicas",
-    version="1.0.0",
+    title="CTC Tech — Fontes Públicas", version="1.0.0",
     description="API somente leitura para consultas públicas PNCP e Compras.gov.br.",
-    docs_url="/docs",
-    redoc_url=None,
+    docs_url="/docs", redoc_url=None,
 )
 
 def require_token(authorization: str | None = Header(default=None)) -> None:
@@ -36,9 +30,9 @@ def require_token(authorization: str | None = Header(default=None)) -> None:
 
 def valid_yyyymmdd(value: str) -> str:
     try:
-        date.fromisoformat(f"{value[:4]}-{value[4:6]}-{value[6:8]}")
         if len(value) != 8:
             raise ValueError
+        date.fromisoformat(f"{value[:4]}-{value[4:6]}-{value[6:8]}")
     except ValueError as exc:
         raise HTTPException(status_code=422, detail="Data deve estar no formato AAAAMMDD.") from exc
     return value
@@ -77,8 +71,8 @@ def pncp_propostas(
         pagina=pagina, tamanho_pagina=tamanho_pagina,
     )
 
-@app.get("/v1/pncp/contratacoes/{controle}", dependencies=[Depends(require_token)])
-def pncp_detalhe(controle: str) -> dict[str, Any]:
+@app.get("/v1/pncp/contratacoes", dependencies=[Depends(require_token)])
+def pncp_detalhe(controle: str = Query(..., min_length=25, max_length=40)) -> dict[str, Any]:
     return {"controle_pncp": controle, "detalhe": pncp_purchase_detail(controle),
             "documentos": pncp_purchase_documents(controle)}
 
