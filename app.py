@@ -48,13 +48,12 @@ def pncp_publicacoes(
     modalidade: int = Query(..., ge=1),
     uf: str | None = Query(default=None, min_length=2, max_length=2),
     cnpj: str | None = Query(default=None, min_length=14, max_length=14),
-    pagina: int = Query(default=1, ge=1),
     tamanho_pagina: int = Query(default=50, ge=1, le=500),
 ) -> dict[str, Any]:
     return pncp_search_all_pages(
         valid_yyyymmdd(data_inicial), valid_yyyymmdd(data_final),
         modalidade=modalidade, uf=uf, cnpj=cnpj,
-        pagina=pagina, tamanho_pagina=tamanho_pagina,
+        tamanho_pagina=tamanho_pagina,
     )
 
 @app.get("/v1/pncp/propostas", dependencies=[Depends(require_token)])
@@ -81,7 +80,6 @@ def comprasgov_publicacoes(
     data_inicial: str = Query(..., description="AAAA-MM-DD"),
     data_final: str = Query(..., description="AAAA-MM-DD"),
     modalidade: int = Query(default=5, ge=1),
-    pagina: int = Query(default=1, ge=1),
     tamanho_pagina: int = Query(default=100, ge=1, le=500),
 ) -> dict[str, Any]:
     try:
@@ -91,7 +89,7 @@ def comprasgov_publicacoes(
         raise HTTPException(status_code=422, detail="Datas devem estar no formato AAAA-MM-DD.") from exc
     return compras_gov_search_all_pages(
         data_inicial, data_final, modalidade=modalidade,
-        pagina=pagina, tamanho_pagina=tamanho_pagina,
+        tamanho_pagina=tamanho_pagina,
     )
 
 @app.exception_handler(SourceError)
